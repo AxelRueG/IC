@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
 from Perceptron import Perceptron
 from activation_funcs import escalon
 
@@ -7,6 +8,10 @@ def ejer1():
   # cargamos archivos y valores principlaes
   data = np.genfromtxt('./data/gtp1/OR_trn.csv',delimiter=',')
   Neurona = Perceptron(data,0.05)
+
+  # funcion para graficar recta
+  recta = lambda x: (-Neurona.weights[0]*x+Neurona.weights[2])/Neurona.weights[1]
+  # frames = np.zeros([N,2])
 
   ## ENTRENAMIENTO -------------------------------------------------------------
   max_num_epoc = 50
@@ -20,20 +25,18 @@ def ejer1():
     # entrenamos la neurona
     for i in range(N):
       y = Neurona.eval(i,escalon)
+      # frames[i] = np.array([recta(-1.0),recta(1.0)])
       Neurona.learning(i,y)
     
     for i in range(N):
       y = Neurona.eval(i,escalon)
       if (y != Neurona.yd[i]): e_trn+=1
-
+    
     e_trn/=N
     print(f'el error en epoca [{epoc}] es del {e_trn}%')
     if e_trn<umbral_error: break
   
   ## COMPROBACION --------------------------------------------------------------
-  # funcion para graficar recta
-  recta = lambda x: (-Neurona.weights[0]*x+Neurona.weights[2])/Neurona.weights[1]
-
   # cargamos dataset de test
   data2 = np.genfromtxt('./data/gtp1/OR_tst.csv',delimiter=',')
   e_tst = 0
@@ -43,9 +46,19 @@ def ejer1():
   e_tst /= data2.shape[0]
   print(f'el error con dataset test es del {e_tst}%')
     
+  ## -- ANIMACION DE LA PRIMERA EPOCA ------------------------------------------
+  # def f_animacion(x):
+  #   ax.clear()
+  #   ax.plot(np.array([-1.0,1.0]),x)
+  #   ax.set_xlim(-1.0,1.0)
+  #   ax.set_ylim(-1.0,1.0)
+  #   plt.show()
+  
   # fig, ax = plt.subplots()
-  # ax.plot(np.array([-1,1]),np.array([recta(-1),recta(1)]))
-  # ax.plot(np.array([-1,1]),np.array([recta(-1),recta(1)]))
+  ## definimos la animacion
+  # animator = FuncAnimation(fig,func=f_animacion,frames=frames, interval=5)
+  ## grafica de la recta de los pesos
+  # ax.plot(np.array([-1.0,1.0]),np.array([recta(-1.0),recta(1.0)]))
   # plt.show()
   
 
