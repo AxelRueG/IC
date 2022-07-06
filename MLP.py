@@ -22,16 +22,19 @@ class MultiLayerPerceptron():
         for i in range(self.N):
             # the first element is the bias with value -1
             x = np.concatenate((np.array([-1]),x))
-            y.append(np.dot(self.weights[i],x))
+            y.append(sigmoide(np.dot(self.weights[i],x)))
             # the new input is the output of the last layer
             x = y[-1].copy()
         return y
-
-    def forward_propagation(self,it):
-        return self.eval(self.x[it])
         
     def backward_propagation(self,it):
+        # capa de salida
         pass
+
+    def training(self,it):
+        y = self.eval(self.x[it])
+        delta_w = self.backward_propagation(it)
+        
 
 
 
