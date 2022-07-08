@@ -48,14 +48,25 @@ class MultiLayerPerceptron():
     print(delta)
 
     return delta
+
+  def training(self, it) :
+    """
+    update the weights of the MLP in base an iterator [it] of the inputs list
+    """
+    # calculate the outpus and the deltas for updates
+    x = self.eval(self.x[it])
+    delta = self.backward_propagation(it,x)
+
+    # add the input to array of outputs for the loop
+    x.insert(0,self.x[it]) 
     
+    for i in range(0,self.N):
+      xs = np.array([self.add_bias(x[i])])
+      self.weights[i] -= self.mu*np.dot(np.transpose([delta[i]]),xs)
+      print(self.weights[i])    
 
   def add_bias(self,x):
     return np.concatenate((np.array([-1]),x))
-
-  def training(self,it):
-    y = self.eval(self.x[it])
-    delta_w = self.backward_propagation(it)
 
   def show_weight(self):
     for i in range(self.N):
