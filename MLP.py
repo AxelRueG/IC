@@ -29,17 +29,25 @@ class MultiLayerPerceptron():
       x = y[-1].copy()
     return y
 
-  def backward_propagation(self,it,y):
-    delta_w = []
+  def backward_propagation(self,it,ys):
+    # add at the start of y's the input as y_0
+    y = ys.copy()
+    y.insert(0,self.add_bias(self.x[it]))
+    delta = []
     # output layer
-    e = self.yd[it]-y[-1]  # error de evalucion
-    delta_j = 0.5*e*(1+y[-1])*(1-y[-1])
-    delta_w.append(np.transpose([self.mu*delta_j])*self.add_bias(y[-2]))
+    e = self.yd[it]-y[-1]
+    di = 0.5*e*(1+y[-1])*(1-y[-1])
+    delta.append(di.copy())
+
     # internal layers
+    for i in range(self.N,1,-1):
+      di = 0.5*np.dot(np.transpose(self.weights[i-1][:,1::]),di)
+      # *(1-y[i-2])*(1+y[i-2])
+      delta.insert(0,di.copy())
+    
+    print(delta)
 
-    # input layer
-
-    return delta_w
+    return delta
     
 
   def add_bias(self,x):
@@ -56,18 +64,23 @@ class MultiLayerPerceptron():
 
 
 if __name__=='__main__':
-  MLP = MultiLayerPerceptron([4,3],np.array(
-      [[ 4.5,  2.3,  1.3,  0.3, -1. , -1. ,  1. ],
-       [ 5.1,  3.3,  1.7,  0.5, -1. , -1. ,  1. ],
-       [ 7.2,  3. ,  5.8,  1.6,  1. , -1. , -1. ],
-       [ 5.5,  4.2,  1.4,  0.2, -1. , -1. ,  1. ],
-       [ 6.7,  3.1,  4.7,  1.5, -1. ,  1. , -1. ],
-       [ 6.4,  3.1,  5.5,  1.8,  1. , -1. , -1. ],
-       [ 6.1,  3. ,  4.9,  1.8,  1. , -1. , -1. ],
-       [ 5.2,  3.4,  1.4,  0.2, -1. , -1. ,  1. ],
-       [ 5. ,  3.3,  1.4,  0.2, -1. , -1. ,  1. ],
-       [ 6.7,  3.3,  5.7,  2.1,  1. , -1. , -1. ]]))
-  MLP.backward_propagation(0,[np.array([-0.32, 1.32,0.55,-0.22]),np.array([-0.98,-1.00001,0.998])])
+  MLP = MultiLayerPerceptron([3,2,1],np.array(
+      [[ -1. , -1. , -1. ],
+       [ -1. ,  1. ,  1. ],
+       [  1. , -1. ,  1. ],
+       [  1. ,  1. , -1. ]]))
+  # MLP = MultiLayerPerceptron([4,3],np.array(
+  #     [[ 4.5,  2.3,  1.3,  0.3, -1. , -1. ,  1. ],
+  #      [ 5.1,  3.3,  1.7,  0.5, -1. , -1. ,  1. ],
+  #      [ 7.2,  3. ,  5.8,  1.6,  1. , -1. , -1. ],
+  #      [ 5.5,  4.2,  1.4,  0.2, -1. , -1. ,  1. ],
+  #      [ 6.7,  3.1,  4.7,  1.5, -1. ,  1. , -1. ],
+  #      [ 6.4,  3.1,  5.5,  1.8,  1. , -1. , -1. ],
+  #      [ 6.1,  3. ,  4.9,  1.8,  1. , -1. , -1. ],
+  #      [ 5.2,  3.4,  1.4,  0.2, -1. , -1. ,  1. ],
+  #      [ 5. ,  3.3,  1.4,  0.2, -1. , -1. ,  1. ],
+  #      [ 6.7,  3.3,  5.7,  2.1,  1. , -1. , -1. ]]))
+  MLP.backward_propagation(0,[np.array([0.01,-0.32, 1.32]),np.array([-0.32, 1.32]),np.array([-0.98])])
   MLP.show_weight()
         
 
