@@ -29,10 +29,8 @@ class MultiLayerPerceptron():
       x = y[-1].copy()
     return y
 
-  def backward_propagation(self,it,ys):
-    # add at the start of y's the input as y_0
-    y = ys.copy()
-    y.insert(0,self.add_bias(self.x[it]))
+  def backward_propagation(self,it,y):  
+    # y.insert(0,self.add_bias(self.x[it]))
     delta = []
     # output layer
     e = self.yd[it]-y[-1]
@@ -40,17 +38,13 @@ class MultiLayerPerceptron():
     delta.append(di.copy())
 
     # internal layers
-    for i in range(self.N,1,-1):
-      # @TODO arregalar la parte de y[i-2]
-      di = 0.5*np.dot(np.transpose(self.weights[i-1][:,1::]),di)*(1-y[i-2])*(1+y[i-2])
+    for i in range(self.N-1,0,-1):
+      di = 0.5*np.dot(np.transpose(self.weights[i][:,1::]),di)*(1-y[i-1])*(1+y[i-1])
       delta.insert(0,di.copy())
 
     return delta
 
   def training(self, it) :
-    """
-    update the weights of the MLP in base an iterator [it] of the inputs list
-    """
     # calculate the outpus and the deltas for updates
     x = self.eval(self.x[it])
     delta = self.backward_propagation(it,x)
@@ -59,19 +53,21 @@ class MultiLayerPerceptron():
 
     for i in range(0,self.N):
       xs = np.array([self.add_bias(x[i])])
-      self.weights[i] -= self.mu*np.dot(np.transpose([delta[i]]),xs)
+      delta_weights = self.mu*np.dot(np.transpose([delta[i]]),xs)
+      print(self.weights[i].shape,delta_weights.shape)
+      self.weights[i] -= delta_weights
 
   def training_epoc(self):
     # training
-    for i in range(self.N): self.training(i)
+    for i in range(self.x.shape[0]): self.training(i)
     # eval error in epoc
     error_in_epoc = 0
-    for i in range(self.N):
+    for i in range(self.x.shape[0]):
       y = self.eval(self.x[i])[-1]
       # if np.all(signo(y) != self.yd[i]): error_in_epoc+=1
       # mean absolute error
       error_in_epoc += np.abs(self.yd[i]-y)
-    return error_in_epoc/self.N
+    return error_in_epoc/self.x.shape[0]
 
   def test(self,data):
     # eval error in epoc
@@ -83,7 +79,6 @@ class MultiLayerPerceptron():
       # if np.all(signo(y) != d[i]): error_in_epoc+=1
       error_in_epoc += np.abs((d[i]-y))
     return error_in_epoc/data.shape[0]
-
 
   def add_bias(self,x):
     return np.concatenate((np.array([-1]),x))

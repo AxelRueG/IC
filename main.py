@@ -85,40 +85,42 @@ def ejer3(file):
   data_trn = data[index[0:to]].copy()
   data_tst = data[index[to::]].copy()
   # data_trn = data
-  MLP = MultiLayerPerceptron([4,1],data_trn)
+  MLP = MultiLayerPerceptron([4,1],data_trn,0.2)
 
   # entrenamiento
-  num_epoc = 200
-  umbral_error = 0.1
+  num_epoc = 10
+  umbral_error = 0.2
 
   # training
   le = []
+  print(MLP.weights)
   for i in range(num_epoc):
     e = MLP.training_epoc()
     le.append(e)
     # print(f'error en epoc {i} es del {e}%')
     if e<umbral_error: break
+  print(MLP.weights)
 
-  # test
-  print(len(le))
-  fig, ax = plt.subplots(2)
-  ax[0].plot(np.array(le))
-  for i in range(data_tst.shape[0]):
-    y = MLP.eval(data_tst[i,0:-1])[-1]
-    print(f'y: {y} d: {data_tst[i,-1]}')
-    if y>0:
-      if data_tst[i,-1] == 1:
-        ax[1].plot(data_tst[i,0],data_tst[i,1],'*k')
-      else:
-        ax[1].plot(data_tst[i,0],data_tst[i,1],'.k')
-    # elif y<0 and data_tst[i,-1]<0:
-    #   ax[1].plot(data_tst[i,0],data_tst[i,1],'*r')
-    else:
-      if data_tst[i,-1] == 1:
-        ax[1].plot(data_tst[i,0],data_tst[i,1],'.b')
-      else:
-        ax[1].plot(data_tst[i,0],data_tst[i,1],'*b')
-  plt.show()
+  # # test
+  # print(len(le))
+  # fig, ax = plt.subplots(2)
+  # ax[0].plot(np.array(le))
+  # for i in range(data_tst.shape[0]):
+  #   y = MLP.eval(data_tst[i,0:-1])[-1]
+  #   print(f'y: {y} d: {data_tst[i,-1]}')
+  #   if y>0:
+  #     if data_tst[i,-1] == 1:
+  #       ax[1].plot(data_tst[i,0],data_tst[i,1],'*k')
+  #     else:
+  #       ax[1].plot(data_tst[i,0],data_tst[i,1],'*b')
+  #   # elif y<0 and data_tst[i,-1]<0:
+  #   #   ax[1].plot(data_tst[i,0],data_tst[i,1],'*r')
+  #   else:
+  #     if data_tst[i,-1] == 1:
+  #       ax[1].plot(data_tst[i,0],data_tst[i,1],'.b')
+  #     else:
+  #       ax[1].plot(data_tst[i,0],data_tst[i,1],'.k')
+  # plt.show()
         
 
 
