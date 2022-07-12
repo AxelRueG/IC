@@ -1,5 +1,5 @@
 import numpy as np
-from activation_funcs import sigmoide 
+from activation_funcs import sigmoide, signo 
 
 
 class MultiLayerPerceptron():
@@ -41,11 +41,9 @@ class MultiLayerPerceptron():
 
     # internal layers
     for i in range(self.N,1,-1):
-      di = 0.5*np.dot(np.transpose(self.weights[i-1][:,1::]),di)
-      # *(1-y[i-2])*(1+y[i-2])
+      # @TODO arregalar la parte de y[i-2]
+      di = 0.5*np.dot(np.transpose(self.weights[i-1][:,1::]),di)*(1-y[i-2])*(1+y[i-2])
       delta.insert(0,di.copy())
-    
-    print(delta)
 
     return delta
 
@@ -56,14 +54,36 @@ class MultiLayerPerceptron():
     # calculate the outpus and the deltas for updates
     x = self.eval(self.x[it])
     delta = self.backward_propagation(it,x)
-
     # add the input to array of outputs for the loop
     x.insert(0,self.x[it]) 
-    
+
     for i in range(0,self.N):
       xs = np.array([self.add_bias(x[i])])
       self.weights[i] -= self.mu*np.dot(np.transpose([delta[i]]),xs)
-      print(self.weights[i])    
+
+  def training_epoc(self):
+    # training
+    for i in range(self.N): self.training(i)
+    # eval error in epoc
+    error_in_epoc = 0
+    for i in range(self.N):
+      y = self.eval(self.x[i])[-1]
+      # if np.all(signo(y) != self.yd[i]): error_in_epoc+=1
+      # mean absolute error
+      error_in_epoc += np.abs(self.yd[i]-y)
+    return error_in_epoc/self.N
+
+  def test(self,data):
+    # eval error in epoc
+    x = data[:,0:-1].copy()
+    d = data[:,-self.architecture[-1]::].copy()
+    error_in_epoc = 0
+    for i in range(data.shape[0]):
+      y = self.eval(x[i])[-1]
+      # if np.all(signo(y) != d[i]): error_in_epoc+=1
+      error_in_epoc += np.abs((d[i]-y))
+    return error_in_epoc/data.shape[0]
+
 
   def add_bias(self,x):
     return np.concatenate((np.array([-1]),x))
@@ -71,27 +91,4 @@ class MultiLayerPerceptron():
   def show_weight(self):
     for i in range(self.N):
       print(self.weights[i].shape)
-
-
-
-if __name__=='__main__':
-  MLP = MultiLayerPerceptron([3,2,1],np.array(
-      [[ -1. , -1. , -1. ],
-       [ -1. ,  1. ,  1. ],
-       [  1. , -1. ,  1. ],
-       [  1. ,  1. , -1. ]]))
-  # MLP = MultiLayerPerceptron([4,3],np.array(
-  #     [[ 4.5,  2.3,  1.3,  0.3, -1. , -1. ,  1. ],
-  #      [ 5.1,  3.3,  1.7,  0.5, -1. , -1. ,  1. ],
-  #      [ 7.2,  3. ,  5.8,  1.6,  1. , -1. , -1. ],
-  #      [ 5.5,  4.2,  1.4,  0.2, -1. , -1. ,  1. ],
-  #      [ 6.7,  3.1,  4.7,  1.5, -1. ,  1. , -1. ],
-  #      [ 6.4,  3.1,  5.5,  1.8,  1. , -1. , -1. ],
-  #      [ 6.1,  3. ,  4.9,  1.8,  1. , -1. , -1. ],
-  #      [ 5.2,  3.4,  1.4,  0.2, -1. , -1. ,  1. ],
-  #      [ 5. ,  3.3,  1.4,  0.2, -1. , -1. ,  1. ],
-  #      [ 6.7,  3.3,  5.7,  2.1,  1. , -1. , -1. ]]))
-  MLP.backward_propagation(0,[np.array([0.01,-0.32, 1.32]),np.array([-0.32, 1.32]),np.array([-0.98])])
-  MLP.show_weight()
-        
 

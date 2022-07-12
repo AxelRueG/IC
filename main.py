@@ -1,8 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
+# from matplotlib.animation import FuncAnimation
+from MLP import MultiLayerPerceptron
 from Perceptron import Perceptron
-from activation_funcs import escalon
+from activation_funcs import escalon, signo
 
 def entrenamiento(data_trn, data_tst):
   Neurona = Perceptron(data_trn,0.05)
@@ -77,6 +78,50 @@ def ejer2(num_part, porcentage):
     epoc, e = entrenamiento(data[index[0:n]],data[index[n::]])
     print(f'particion {i} trn {epoc}:\t{e[0]}, porcentaje error_tst \t{e[1]}%')
 
+def ejer3(file):
+  data = np.genfromtxt(file, delimiter=',')
+  index = np.random.permutation(np.arange(len(data)))
+  to = int(len(data)*0.9)
+  data_trn = data[index[0:to]].copy()
+  data_tst = data[index[to::]].copy()
+  # data_trn = data
+  MLP = MultiLayerPerceptron([4,1],data_trn)
+
+  # entrenamiento
+  num_epoc = 200
+  umbral_error = 0.1
+
+  # training
+  le = []
+  for i in range(num_epoc):
+    e = MLP.training_epoc()
+    le.append(e)
+    # print(f'error en epoc {i} es del {e}%')
+    if e<umbral_error: break
+
+  # test
+  print(len(le))
+  fig, ax = plt.subplots(2)
+  ax[0].plot(np.array(le))
+  for i in range(data_tst.shape[0]):
+    y = MLP.eval(data_tst[i,0:-1])[-1]
+    print(f'y: {y} d: {data_tst[i,-1]}')
+    if y>0:
+      if data_tst[i,-1] == 1:
+        ax[1].plot(data_tst[i,0],data_tst[i,1],'*k')
+      else:
+        ax[1].plot(data_tst[i,0],data_tst[i,1],'.k')
+    # elif y<0 and data_tst[i,-1]<0:
+    #   ax[1].plot(data_tst[i,0],data_tst[i,1],'*r')
+    else:
+      if data_tst[i,-1] == 1:
+        ax[1].plot(data_tst[i,0],data_tst[i,1],'.b')
+      else:
+        ax[1].plot(data_tst[i,0],data_tst[i,1],'*b')
+  plt.show()
+        
+
 
 if __name__=='__main__':
-  ejer2(10,0.8)
+  # ejer2(10,0.8)
+  ejer3('./data/gtp1/concentlite.csv')
