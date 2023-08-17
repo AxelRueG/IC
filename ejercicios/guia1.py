@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 # from modelos.MLP import MultiLayerPreceptron
 from modelos.Perceptron import Perceptron
 from utils.funciones_de_activacion import sgn, sigmoide
+from utils import utils
 
 def ejer_1(arch_name, num_max_epoc, completion_criterial):
     # traing data
@@ -25,7 +26,6 @@ def ejer_1(arch_name, num_max_epoc, completion_criterial):
     d = data[:, -1]
 
     print('el error medio es:', perceptron.score(x,d))
-    plt.show()
 
 
 # def ejer_3(arch_name, num_epoc, stop_creterial):

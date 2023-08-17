@@ -29,4 +29,7 @@ class Perceptron:
             err_tot += (y_d[i] - self.eval(data_set[i]))**2
         err = err_tot/len(data_set)
         return err 
+    
+    def getWeight(self):
+        return self.__weight.copy()
         
