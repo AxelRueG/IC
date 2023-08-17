@@ -1,11 +1,11 @@
 import numpy as np
-
+from utils.funciones_de_activacion import sigmoide
 # np.random.seed(2)
 
 
 class MultiLayerPreceptron():
 
-    def __init__(self, num_in, architecture, learn_coef, fun):
+    def __init__(self, num_in, architecture, learn_coef, fun=sigmoide):
         self.__learn_coef = learn_coef
         self.__architecture = architecture
         self.__fun = fun

@@ -45,7 +45,7 @@ def ejer_3(arch_name, num_epoc, stop_creterial):
     # it_tst = it_random[cant_trn:]
 
     # modelo
-    model = MultiLayerPreceptron(num_in-1,[2,2],0.1,sigmoide)
+    model = MultiLayerPreceptron(num_in-1,[2,2],0.1)
 
     # --- entrenamiento ----------------------------------------------------------------------------
     epoc = 0
