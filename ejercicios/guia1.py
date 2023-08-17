@@ -1,8 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
-# from modelos.MLP import MultiLayerPreceptron
+from modelos.MLP import MultiLayerPreceptron
 from modelos.Perceptron import Perceptron
 from utils.funciones_de_activacion import sgn, sigmoide
+from os.path import abspath
 from utils import utils
 
 def ejer_1(arch_name, num_max_epoc, completion_criterial):
@@ -28,51 +29,52 @@ def ejer_1(arch_name, num_max_epoc, completion_criterial):
     print('el error medio es:', perceptron.score(x,d))
 
 
-# def ejer_3(arch_name, num_epoc, stop_creterial):
-#     # tenemos que crear un MLP para poder distingir entre los datos dados por "concentlite.csv"
-#     data = np.genfromtxt(arch_name, delimiter=',')
-#     num_samples, num_in = data.shape
-#     x = data[:,0:2]
-#     d = data[:,-1]
+def ejer_3(arch_name, num_epoc, stop_creterial):
+    # tenemos que crear un MLP para poder distingir entre los datos
+    data = np.genfromtxt(arch_name, delimiter=',')
+    num_samples, num_in = data.shape
+    x = data[:,0:2]
+    d = data[:,1::]
+    # d = data[:,-1]
 
-#     # mix the data to separate training and test data
-#     rgn = np.random.default_rng()
-#     it_random = rgn.permutation(np.arange(num_samples))
-#     cant_trn = int(num_samples*0.7)
-#     it_trn = it_random[0:cant_trn]
-#     it_tst = it_random[cant_trn:]
+    # # mix the data to separate training and test data
+    # rgn = np.random.default_rng()
+    # it_random = rgn.permutation(np.arange(num_samples))
+    # cant_trn = int(num_samples*0.7)
+    # it_trn = it_random[0:cant_trn]
+    # it_tst = it_random[cant_trn:]
 
-#     # modelo
-#     model = MultiLayerPreceptron(num_in-1,[4,1],0.1,sigmoide)
+    # modelo
+    model = MultiLayerPreceptron(num_in-1,[2,2],0.1,sigmoide)
 
-#     # entrenamiento
-#     errs = []
-#     for epoc in range(num_epoc):
-#         err = 0
-#         for it in it_trn:
-#             err += model.traing(x[it,:], d[it])
-        
-#         err /= len(it_trn)
-#         errs.append(err)
-#         # print('error medio absoluto por epoca: ', err)
-#         if err <= stop_creterial:
-#             print('finished in: ',epoc,' epocs')
-#             break
+    # --- entrenamiento ----------------------------------------------------------------------------
+    epoc = 0
+    score = 100
+    while (score>stop_creterial and epoc<num_epoc):
+        # model.trn(x,np.transpose([d]))
+        model.trn(x,d)
+        score = model.score(x,d)
+        epoc+=1
 
-#     plt.figure()
-#     plt.plot(np.array(errs))
-#     plt.show()
+    print(f'el valor del error obtenido en la epoca {epoc} es {score}')
 
-#     # test
-#     plt.figure()
-#     for it in it_tst:
-#         y = model.eval(x[it,:])
-#         if (y<0 and d[it]>0) or (y>0 and d[it]<0):
-#             plt.plot(x[it,0], x[it,1], '*k')
-#         elif y > 0:
-#             plt.plot(x[it,0], x[it,1], '*r')
-#         else:
-#             plt.plot(x[it,0], x[it,1], '*b')
+    ## --- test ------------------------------------------------------------------------------------
+    data = np.genfromtxt(abspath("./data/gtp1/XOR_tst.csv"), delimiter=',')
+    x = data[:,0:2]
+    d = data[:,1::]
+    # d = data[:,-1]
+    y = model.eval(x[0,:])
+    print(y, d[0,:])
     
-#     plt.show()
+    # plt.figure()
+    # for i in range(len(x)):
+        # y = model.eval(x[i,:])
+    #     if (y[0]<0 and d[i,0]>0) or (y[0]>0 and d[i,0]<0):
+    #         plt.plot(x[i,0], x[i,1], '*k')
+    #     elif y > 0:
+    #         plt.plot(x[i,0], x[i,1], '*r')
+    #     else:
+    #         plt.plot(x[i,0], x[i,1], '*b')
+    
+    # plt.show()
 
