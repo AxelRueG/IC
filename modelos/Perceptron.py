@@ -3,7 +3,7 @@ import numpy as np
 class Perceptron:
     def __init__(self, x_len, fun, learn_coef):
         self.__fun = fun
-        self.__learn_coef = learn_coef/2
+        self.__learn_coef = learn_coef
         self.__weight = 2*np.random.rand(1, x_len+1)-1
 
     def eval(self, x_in):
@@ -15,19 +15,30 @@ class Perceptron:
         # para cada dato del data_set
         for i in range(len(data_set)):
             x = np.concatenate(([-1], data_set[i])) # agregamos bias
+
             if method == 'c_error':
                 y = self.__fun(self.__weight @ x)
                 self.__weight += ((0.5*self.__learn_coef)*(yd[i] - y)*x)
-            else:
+            elif method == 'gradient':
                 e = self.__weight @ x
                 self.__weight -= (2*self.__learn_coef*(yd[i] - e) * x)
+            else:
+                raise ValueError("metodo no valido")
+
 
     # Measures the percentage of success of the model
-    def score(self, data_set, y_d):
+    def score(self, data_set, y_d, method="failure_rate"):
         err_tot = 0
         for i in range(len(data_set)):
-            err_tot += (y_d[i] - self.eval(data_set[i]))**2
+            if method == "quad_error":
+                err_tot += (y_d[i] - self.eval(data_set[i]))**2
+            elif method=="failure_rate": 
+                if y_d[i] != self.eval(data_set[i]): err_tot+=1
+            else:
+                raise ValueError("metodo no valido")
+            
         err = err_tot/len(data_set)
+
         return err 
     
     def getWeight(self):
