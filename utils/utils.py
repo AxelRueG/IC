@@ -20,3 +20,21 @@ def train_test_split(x, yd, percent):
     y_tst = yd[it_random[ cant_trn:  ],:].copy()
 
     return x_trn, x_tst, y_trn, y_tst
+
+# Return two matrix with index permutated of dataset
+def hold_out(num_part, data_len, percent=0.8, save= False, file_name="index_perm"):
+    rgn = np.random.default_rng()
+    cant_trn = int(data_len*percent)
+
+    trn = np.zeros([cant_trn, num_part], dtype=int)
+    tst = np.zeros([data_len-cant_trn, num_part], dtype=int)
+    for i in range(num_part):
+        it_random = rgn.permutation(data_len)
+        trn[:,i] = it_random[0:cant_trn]
+        tst[:,i] = it_random[cant_trn::]
+
+    if save:
+        np.savetxt(f"assets/{file_name}_trn.csv",trn,delimiter=',')
+        np.savetxt(f"assets/{file_name}_tst.csv",tst,delimiter=',')
+
+    return trn, tst
