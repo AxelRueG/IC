@@ -20,13 +20,13 @@ class Perceptron:
                 y = self.__fun(self.__weight @ x)
                 self.__weight += ((0.5*self.__learn_coef)*(yd[i] - y)*x)
             elif method == 'gradient':
-                e = self.__weight @ x
-                self.__weight -= (2*self.__learn_coef*(yd[i] - e) * x)
+                e = yd[i] - (self.__weight @ x)
+                self.__weight += (2 * self.__learn_coef* e * x)
             else:
                 raise ValueError("metodo no valido")
 
 
-    # Measures the percentage of success of the model
+    # porcentaje de aciertos
     def score(self, data_set, y_d, method="failure_rate"):
         err_tot = 0
         for i in range(len(data_set)):
