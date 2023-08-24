@@ -10,7 +10,7 @@ class Perceptron:
         x = np.concatenate(([-1], x_in))
         return self.__fun(self.__weight @ x)
 
-    # a epoc of training
+    # El entrenamiento se realiza de a "lotes"
     def trn(self, data_set, yd, method = 'gradient'):
         # para cada dato del data_set
         for i in range(len(data_set)):
@@ -20,19 +20,19 @@ class Perceptron:
                 y = self.__fun(self.__weight @ x)
                 self.__weight += ((0.5*self.__learn_coef)*(yd[i] - y)*x)
             elif method == 'gradient':
-                e = self.__weight @ x
-                self.__weight -= (2*self.__learn_coef*(yd[i] - e) * x)
+                e = yd[i] - (self.__weight @ x)
+                self.__weight += (2 * self.__learn_coef * e * x)
             else:
                 raise ValueError("metodo no valido")
 
 
-    # Measures the percentage of success of the model
-    def score(self, data_set, y_d, method="failure_rate"):
+    # porcentaje de acierto del modelo
+    def score(self, data_set, y_d, method="porcentaje_error"):
         err_tot = 0
         for i in range(len(data_set)):
-            if method == "quad_error":
+            if method == "error_cuadratico":
                 err_tot += (y_d[i] - self.eval(data_set[i]))**2
-            elif method=="failure_rate": 
+            elif method=="porcentaje_error": 
                 if y_d[i] != self.eval(data_set[i]): err_tot+=1
             else:
                 raise ValueError("metodo no valido")
