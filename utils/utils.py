@@ -8,6 +8,9 @@ def funcionLinealPerceptron(weight):
     y1 = ((-weight[1]/weight[2])*x[0]) + (weight[0]/weight[2])
     y2 = ((-weight[1]/weight[2])*x[1]) + (weight[0]/weight[2])
 
+    # implt.figure()
+    plt.xlim([-2,2])
+    plt.ylim([-2,2])
     plt.plot(x, [y1,y2])
     plt.show()
 
