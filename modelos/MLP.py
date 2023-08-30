@@ -42,25 +42,25 @@ class MultiLayerPreceptron():
         # output layer
         di = 0.5 * (d-yd[-1]) * (1-yd[-1]) * (1+yd[-1])
         dw.append(di.copy())
-        # internal layers
+        # hidden layers
         for i in range(self.__layers-1, 0, -1):
             di = 0.5 * (np.transpose(self.__weights[i][:, 1::]) @ di) * (1-yd[i-1]) * (1+yd[i-1])
             dw.insert(0, di.copy())
         return dw
 
-    # this function recalculate the weights
+    # recalcula los pesos
     def __amend(self, ys, delta):
         for i in range(self.__layers):
             y = self.__add_bias(ys[i])
             dw = self.__learn_coef * (np.transpose([delta[i]]) @ [y])
             self.__weights[i] += dw
 
-    # this function trainig the model and return the absolute error
+    # funcion de entrenamiento por lotes
     def trn(self, x_in, d):
         for i in range(len(x_in)):
-            ys = self.__propagation(x_in[i,:])
-            dw = self.__back_propagation(ys, d[i,:])
-            ys.insert(0, x_in[i,:].copy())
+            ys = self.__propagation(x_in[i])
+            dw = self.__back_propagation(ys, d[i])
+            ys.insert(0, x_in[i].copy())
             self.__amend(ys, dw)
 
         

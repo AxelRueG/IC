@@ -12,16 +12,17 @@ class Perceptron:
 
     # a epoc of training
     def trn(self, data_set, yd, method = 'gradient'):
+        x = -1 * np.ones([data_set.shape[0], data_set.shape[1]+1]) # agregamos el bias
+        x[:,1:] = data_set
+
         # para cada dato del data_set
         for i in range(len(data_set)):
-            x = np.concatenate(([-1], data_set[i])) # agregamos bias
-
             if method == 'c_error':
-                y = self.__fun(self.__weight @ x)
-                self.__weight += ((0.5*self.__learn_coef)*(yd[i] - y)*x)
+                y = self.__fun(self.__weight @ x[i])
+                self.__weight += ((0.5*self.__learn_coef)*(yd[i] - y)*x[i])
             elif method == 'gradient':
-                e = yd[i] - (self.__weight @ x)
-                self.__weight += (2 * self.__learn_coef* e * x)
+                e = yd[i] - (self.__weight @ x[i])
+                self.__weight += (2 * self.__learn_coef* e * x[i])
             else:
                 raise ValueError("metodo no valido")
 
