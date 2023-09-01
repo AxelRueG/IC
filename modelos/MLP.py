@@ -5,7 +5,7 @@ from utils.funciones_de_activacion import sigmoide
 
 class MultiLayerPreceptron():
 
-    def __init__(self, num_in, architecture, learn_coef, fun=sigmoide):
+    def __init__(self, num_in: int, architecture: list, learn_coef: float, fun=sigmoide):
         self.__learn_coef = learn_coef
         self.__architecture = architecture
         self.__fun = fun
@@ -19,11 +19,11 @@ class MultiLayerPreceptron():
             num_in = architecture[i]
 
     # agrega el bias a una entrada
-    def __add_bias(self, x):
+    def __add_bias(self, x: np.ndarray) -> np.ndarray:
         return np.concatenate(([-1], x))
 
     # this function calculate all layer output and return this in a list
-    def __propagation(self, x_in):
+    def __propagation(self, x_in: np.ndarray) -> list:
         x = x_in.copy()
         ys = []
         for i in range(self.__layers):
@@ -33,11 +33,11 @@ class MultiLayerPreceptron():
 
         return ys
 
-    def eval(self, x_in):
+    def eval(self, x_in: np.ndarray):
         return self.__propagation(x_in)[-1]
 
     # retopropagacion que calcula el gradiente
-    def __back_propagation(self, yd, d):
+    def __back_propagation(self, yd: np.ndarray, d: np.ndarray) -> list:
         dw = []
         # output layer
         di = 0.5 * (d-yd[-1]) * (1-yd[-1]) * (1+yd[-1])
@@ -49,7 +49,7 @@ class MultiLayerPreceptron():
         return dw
 
     # recalcula los pesos
-    def __amend(self, ys, delta):
+    def __amend(self, ys: np.ndarray, delta: list):
         for i in range(self.__layers):
             y = self.__add_bias(ys[i])
             dw = self.__learn_coef * (np.transpose([delta[i]]) @ [y])
@@ -64,7 +64,7 @@ class MultiLayerPreceptron():
             self.__amend(ys, dw)
 
     # funcion para calcular el porcentaje de error cuadratico total
-    def score(self, data_set, y_d):
+    def score(self, data_set: np.ndarray, y_d: np.ndarray) -> float:
         err_tot = 0
         for i in range(len(data_set)):
             err_tot += sum((y_d[i] - self.eval(data_set[i]))**2)
@@ -73,3 +73,6 @@ class MultiLayerPreceptron():
 
     def getWeigth(self) -> list:
         return self.__weights
+
+    def __str__(self) -> str:
+        return f"la arquitectura del modelo es: {self.__architecture}\ncon una profundidad de {len(self.__architecture)}"
