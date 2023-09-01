@@ -28,7 +28,7 @@ class Perceptron:
 
 
     # porcentaje de aciertos
-    def score(self, data_set, y_d, method="failure_rate"):
+    def score(self, data_set, y_d, method="porcentaje_error"):
         err_tot = 0
         for i in range(len(data_set)):
             if method == "error_cuadratico":

@@ -12,7 +12,7 @@ def funcionLinealPerceptron(weight):
     plt.xlim([-2,2])
     plt.ylim([-2,2])
     plt.plot(x, [y1,y2])
-    plt.show()
+    # plt.show()
 
 def train_test_split(x, yd, percent):
     # mix the data to separate training and test data

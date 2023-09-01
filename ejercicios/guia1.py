@@ -30,6 +30,7 @@ def ejer_1():
     plt.plot(x[:,0],x[:,1],'*')
     plt.title("antes de entrenar")
     funcionLinealPerceptron(perceptron.getWeight())
+    plt.show()
     
     # entrenamiento por epocas
     epoc = 0
@@ -53,6 +54,7 @@ def ejer_1():
             plt.plot(x[i,0], x[i,1], '*b')
     plt.title(f"despues de la epoca {epoc}")
     funcionLinealPerceptron(perceptron.getWeight())
+    plt.show()
 
     print('el error medio es:', perceptron.score(x,d))
 

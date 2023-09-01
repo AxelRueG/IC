@@ -18,7 +18,7 @@ class MultiLayerPreceptron():
             self.__weights.append(w)
             num_in = architecture[i]
 
-    # this function add a bias to the input
+    # agrega el bias a una entrada
     def __add_bias(self, x):
         return np.concatenate(([-1], x))
 
@@ -36,7 +36,7 @@ class MultiLayerPreceptron():
     def eval(self, x_in):
         return self.__propagation(x_in)[-1]
 
-    # this function calculate the gradient of all layes
+    # retopropagacion que calcula el gradiente
     def __back_propagation(self, yd, d):
         dw = []
         # output layer
@@ -63,11 +63,13 @@ class MultiLayerPreceptron():
             ys.insert(0, x_in[i].copy())
             self.__amend(ys, dw)
 
-        
-    
+    # funcion para calcular el porcentaje de error cuadratico total
     def score(self, data_set, y_d):
         err_tot = 0
         for i in range(len(data_set)):
             err_tot += sum((y_d[i] - self.eval(data_set[i]))**2)
         err = err_tot/len(data_set)
         return err 
+
+    def getWeigth(self) -> list:
+        return self.__weights
