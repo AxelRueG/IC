@@ -7,16 +7,16 @@ from utils.utils import funcionLinealPerceptron
 from os.path import abspath
 
 def ejer_1():
-    arch_name_trn = abspath('data/Guia1/OR_trn.csv')
-    arch_name_tst = abspath('data/Guia1/OR_tst.csv')
+    # arch_name_trn = abspath('data/Guia1/OR_trn.csv')
+    # arch_name_tst = abspath('data/Guia1/OR_tst.csv')
     # arch_name_trn = abspath('data/Guia1/XOR_trn.csv')
     # arch_name_tst = abspath('data/Guia1/XOR_tst.csv')
     # arch_name_trn = abspath('data/Guia1/OR_50_trn.csv')
     # arch_name_tst = abspath('data/Guia1/OR_50_tst.csv')
-    # arch_name_trn = abspath('data/Guia1/OR_90_trn.csv')
-    # arch_name_tst = abspath('data/Guia1/OR_90_tst.csv')
+    arch_name_trn = abspath('data/Guia1/OR_90_trn.csv')
+    arch_name_tst = abspath('data/Guia1/OR_90_tst.csv')
 
-    num_max_epoc = 10
+    num_max_epoc = 100
     completion_criterial = .05
 
     # --- Entrenamiento ------------------------------------------------------------------
