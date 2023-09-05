@@ -6,14 +6,14 @@ from utils.funciones_de_activacion import sgn
 from utils.utils import funcionLinealPerceptron
 
 def guia2_ejer1():
-    # arch_name_trn = abspath('data/Guia1/XOR_trn.csv')
-    # arch_name_tst = abspath('data/Guia1/XOR_tst.csv')
+    #arch_name_trn = abspath('data/Guia1/XOR_trn.csv')
+    #arch_name_tst = abspath('data/Guia1/XOR_tst.csv')
     # --- Datos ejer 2 ---
     arch_name_trn = abspath('data/Guia2/concent_trn.csv')
     arch_name_tst = abspath('data/Guia2/concent_tst.csv')
 
     num_max_epox = 500
-    completation_criterial = 0.2
+    tolerancia = 0.2
 
     # --- Entrenamiento ---------------------------------------------------------------------
     data = np.genfromtxt(arch_name_trn, delimiter= ',')
@@ -21,12 +21,16 @@ def guia2_ejer1():
     d = data[:,-1]
     _, num_inputs = x.shape
 
-    mlp = MultiLayerPreceptron(num_inputs, [10,1], 0.15)
+    
+    mlp = MultiLayerPreceptron(num_inputs, [10,15,1], 0.30)
 
     epoc = 0
-    while (mlp.score(x,d)>completation_criterial and epoc<num_max_epox):
+    score = 1
+    while (score>tolerancia and epoc<num_max_epox):
+        print(score)
         mlp.trn(x,d)
-        epoc += 1
+        score = mlp.score(x,d)
+        epoc+=1
 
     # --- test ------------------------------------------------------------------------------
     data = np.genfromtxt(arch_name_tst, delimiter=',')
@@ -60,7 +64,7 @@ def guia2_ejer3():
     arch_name_tst = abspath('data/Guia2/irisbin_tst.csv')
 
     num_max_epox = 500
-    completation_criterial = 0.1
+    tolerancia = 0.05
 
     # --- Entrenamiento ---------------------------------------------------------------------
     data = np.genfromtxt(arch_name_trn, delimiter= ',')
@@ -68,28 +72,19 @@ def guia2_ejer3():
     d = data[:,4:]
     _, num_inputs = x.shape
 
-    mlp = MultiLayerPreceptron(num_inputs, [5,3], 0.1)
+    mlp = MultiLayerPreceptron(num_inputs, [2,3], 0.2)
 
     epoc = 0
-    while (mlp.score(x,d)>completation_criterial and epoc<num_max_epox):
+    score = 1
+    while (score>tolerancia and epoc<num_max_epox):
+        print(score)
         mlp.trn(x,d)
-        epoc += 1
+        score = 1-mlp.score(x,d,"porcentaje_error")
+        epoc+=1
 
     # --- test ------------------------------------------------------------------------------
-    # data = np.genfromtxt(arch_name_tst, delimiter=',')
-    # x = data[:, 0:2]
-    # d = data[:, -1]
+    data = np.genfromtxt(arch_name_tst, delimiter=',')
+    x = data[:,0:4]
+    d = data[:,4:]
 
-    # # grafica de resultados
-    # for i in range(len(x)):
-    #     y = mlp.eval(x[i,:])
-    #     if (sgn(y) != d[i]):
-    #         plt.plot(x[i,0], x[i,1], '*b')
-    #     elif y > 0:
-    #         plt.plot(x[i,0], x[i,1], '*k')
-    #     else:
-    #         plt.plot(x[i,0], x[i,1], '*r')
-    # plt.title(f"despues de la epoca {epoc}")
-    # plt.show()
-
-    print(f'el porcentaje de error es {mlp.score(x,d,"porcentaje_error") * 100}% obtenido en {epoc} epocas' )
+    print(f'el porcentaje de error es {mlp.score(x,d,"porcentaje_error") } obtenido en {epoc} epocas' )

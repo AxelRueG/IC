@@ -1,5 +1,6 @@
 import numpy as np
-from utils.funciones_de_activacion import sigmoide, sgn_vec 
+from utils.funciones_de_activacion import sigmoide, sgn_vec
+from utils.utils import winner_take_all
 # np.random.seed(2)
 
 
@@ -70,7 +71,7 @@ class MultiLayerPreceptron():
             if etype == "error_cuadratico":
                 err_tot += sum((y_d[i] - self.eval(data_set[i]))**2)
             elif etype == "porcentaje_error":
-                if np.all(y_d[i] != sgn_vec(self.eval(data_set[i]))): err_tot+=1
+                if np.all(np.equal(y_d[i], winner_take_all(self.eval(data_set[i])))): err_tot+=1
             else:
                 raise ValueError(f"{etype} no es un tipo de error valido")
             
