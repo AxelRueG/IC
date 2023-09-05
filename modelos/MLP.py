@@ -1,5 +1,5 @@
 import numpy as np
-from utils.funciones_de_activacion import sigmoide
+from utils.funciones_de_activacion import sigmoide, sgn_vec 
 # np.random.seed(2)
 
 
@@ -64,10 +64,16 @@ class MultiLayerPreceptron():
             self.__amend(ys, dw)
 
     # funcion para calcular el porcentaje de error cuadratico total
-    def score(self, data_set: np.ndarray, y_d: np.ndarray) -> float:
+    def score(self, data_set: np.ndarray, y_d: np.ndarray, etype: str = "error_cuadratico") -> float:
         err_tot = 0
         for i in range(len(data_set)):
-            err_tot += sum((y_d[i] - self.eval(data_set[i]))**2)
+            if etype == "error_cuadratico":
+                err_tot += sum((y_d[i] - self.eval(data_set[i]))**2)
+            elif etype == "porcentaje_error":
+                if np.all(y_d[i] != sgn_vec(self.eval(data_set[i]))): err_tot+=1
+            else:
+                raise ValueError(f"{etype} no es un tipo de error valido")
+            
         err = err_tot/len(data_set)
         return err 
 

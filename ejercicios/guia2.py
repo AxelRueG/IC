@@ -60,12 +60,12 @@ def guia2_ejer3():
     arch_name_tst = abspath('data/Guia2/irisbin_tst.csv')
 
     num_max_epox = 500
-    completation_criterial = 0.2
+    completation_criterial = 0.1
 
     # --- Entrenamiento ---------------------------------------------------------------------
     data = np.genfromtxt(arch_name_trn, delimiter= ',')
-    x = data[:,0:2]
-    d = data[:,-1]
+    x = data[:,0:4]
+    d = data[:,4:]
     _, num_inputs = x.shape
 
     mlp = MultiLayerPreceptron(num_inputs, [5,3], 0.1)
@@ -92,4 +92,4 @@ def guia2_ejer3():
     # plt.title(f"despues de la epoca {epoc}")
     # plt.show()
 
-    print(f'el error cuadratico medio es: {mlp.score(x,d)} obtenido en {epoc} epocas' )
+    print(f'el porcentaje de error es {mlp.score(x,d,"porcentaje_error") * 100}% obtenido en {epoc} epocas' )
