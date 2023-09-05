@@ -76,10 +76,12 @@ def guia2_ejer3():
 
     epoc = 0
     score = 1
+    vector_error=[]
     while (score>tolerancia and epoc<num_max_epox):
         print(score)
         mlp.trn(x,d)
         score = 1-mlp.score(x,d,"porcentaje_error")
+        vector_error.append(score)
         epoc+=1
 
     # --- test ------------------------------------------------------------------------------
@@ -88,3 +90,8 @@ def guia2_ejer3():
     d = data[:,4:]
 
     print(f'el porcentaje de error es {mlp.score(x,d,"porcentaje_error") } obtenido en {epoc} epocas' )
+    plt.plot(vector_error)
+    plt.title("porcentaje de error")
+    plt.xlabel("epocas")
+    plt.ylabel("error")
+    plt.show()
