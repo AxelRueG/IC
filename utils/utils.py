@@ -45,12 +45,12 @@ def hold_out(num_part, data_len, percent=0.8, save= False, file_name="index_perm
     return trn, tst
 
 def winner_take_all(x):
-    i_max = np.argmax(x)
-    y = np.zeros_like(x)
-    y[i_max] = 1
-    for i in range(len(x)):
-        if i != i_max:
-            y[i] = -1
+    # i_max = np.argmax(x)
+    y = -1 * np.ones_like(x)
+    y[np.nonzero(x==max(x))] = 1
+    # for i in range(len(x)):
+    #     if i != i_max:
+    #         y[i] = -1
     return y
 
    
