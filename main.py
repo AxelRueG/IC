@@ -8,5 +8,5 @@ if __name__ == '__main__':
  #prueba
 
 
-    #g2.guia2_ejer1()
-    g2.guia2_ejer3() 
+   #  g2.guia2_ejer1()
+   g2.guia2_ejer3() 

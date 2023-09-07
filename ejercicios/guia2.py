@@ -6,14 +6,14 @@ from utils.funciones_de_activacion import sgn
 from utils.utils import funcionLinealPerceptron, winner_take_all
 
 def guia2_ejer1():
-    #arch_name_trn = abspath('data/Guia1/XOR_trn.csv')
-    #arch_name_tst = abspath('data/Guia1/XOR_tst.csv')
+    # arch_name_trn = abspath('data/Guia1/XOR_trn.csv')
+    # arch_name_tst = abspath('data/Guia1/XOR_tst.csv')
     # --- Datos ejer 2 ---
     arch_name_trn = abspath('data/Guia2/concent_trn.csv')
     arch_name_tst = abspath('data/Guia2/concent_tst.csv')
 
-    num_max_epox = 500
-    tolerancia = 0.2
+    num_max_epox = 1500
+    tolerancia = 0.05
 
     # --- Entrenamiento ---------------------------------------------------------------------
     data = np.genfromtxt(arch_name_trn, delimiter= ',')
@@ -22,15 +22,20 @@ def guia2_ejer1():
     _, num_inputs = x.shape
 
     
-    mlp = MultiLayerPreceptron(num_inputs, [10,15,1], 0.30)
+    mlp = MultiLayerPreceptron(num_inputs, [5,1], 0.005)
+    # mlp = MultiLayerPreceptron(num_inputs, [2,1], 0.10)
 
     epoc = 0
+    # plt.plot(vec_error)
+    # plt.plot('error obtenido')
+    # plt.xlabel('epocas')
+    # plt.ylabel('
     score = mlp.score(x,d)
     vec_error = []
     while (score>tolerancia and epoc<num_max_epox):
-        print(score)
+        print(f"{epoc}: {score}")
         mlp.trn(x,d)
-        score = mlp.score(x,d)
+        score = mlp.score(x,d,"porcentaje_error")
         vec_error.append(score)
         epoc+=1
 
@@ -79,7 +84,7 @@ def guia2_ejer3():
     d = data[:,4:]
     _, num_inputs = x.shape
 
-    mlp = MultiLayerPreceptron(num_inputs, [3], 0.2)
+    mlp = MultiLayerPreceptron(num_inputs, [1,3], 0.05)
 
     epoc = 0
     score = mlp.score(x,d)

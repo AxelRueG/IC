@@ -38,14 +38,14 @@ class MultiLayerPreceptron():
         return self.__propagation(x_in)[-1]
 
     # retopropagacion que calcula el gradiente
-    def __back_propagation(self, yd: np.ndarray, d: np.ndarray) -> list:
+    def __back_propagation(self, y: np.ndarray, d: np.ndarray) -> list:
         dw = []
         # output layer
-        di = 0.5 * (d-yd[-1]) * (1-yd[-1]) * (1+yd[-1])
+        di = 0.5 * (d-y[-1]) * (1-y[-1]) * (1+y[-1])
         dw.append(di.copy())
         # hidden layers
         for i in range(self.__layers-1, 0, -1):
-            di = 0.5 * (np.transpose(self.__weights[i][:, 1::]) @ di) * (1-yd[i-1]) * (1+yd[i-1])
+            di = 0.5 * (np.transpose(self.__weights[i][:, 1::]) @ di) * (1-y[i-1]) * (1+y[i-1])
             dw.insert(0, di.copy())
         return dw
 
@@ -72,6 +72,7 @@ class MultiLayerPreceptron():
                 err_tot += sum((y_d[i] - self.eval(data_set[i]))**2)
             elif etype == "porcentaje_error":
                 if np.all(np.equal(y_d[i], winner_take_all(self.eval(data_set[i])))): err_tot+=1
+                # if np.all(np.not_equal(y_d[i], sgn_vec(self.eval(data_set[i])))): err_tot+=1
             else:
                 raise ValueError(f"{etype} no es un tipo de error valido")
             
