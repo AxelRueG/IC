@@ -2,6 +2,7 @@ from matplotlib.animation import FuncAnimation
 import numpy as np
 import matplotlib.pyplot as plt
 from os.path import abspath
+# import time
 
 class SOM:
 
@@ -37,7 +38,7 @@ class SOM:
         coef_learn.insert(1,0)
         vecindad = [vecindad, 0, 0]
 
-        peso_history = [np.copy(self.pesos)]
+        # peso_history = [np.copy(self.pesos)]
 
         for etapa in range(3):
             for epoc in range(epocs[etapa]):
@@ -48,17 +49,18 @@ class SOM:
                     coefs = coef_learn[etapa] * np.ones(epocs[etapa])
                     vecindades = vecindad[etapa] * np.ones(epocs[etapa]).astype(int)
 
+                print(epoc, vecindades[epoc], coefs[epoc])
                 for x in data_set:
                     # Encontrar la neurona ganadora
                     ganadora = self.encontrar_neurona_ganadora(x)
                     # actulizar ganadora y vecidad
-                    self.actualizar_vecindad(ganadora, x, vecindades[epoc], coefs[epoc])
-                    # self.actualizar_vecindad_cuadrada(ganadora, x, vecindades[epoc], coefs[epoc])
+                    # self.actualizar_vecindad(ganadora, x, vecindades[epoc], coefs[epoc])
+                    self.actualizar_vecindad_cuadrada(ganadora, x, vecindades[epoc], coefs[epoc])
                     
-                    peso_history.append(np.copy(self.pesos))
+        #     peso_history.append(np.copy(self.pesos))
 
         
-        return peso_history
+        # return peso_history
 
     def plot_pesos(self, pesos):
         for i in range(pesos.shape[0]):
@@ -81,13 +83,17 @@ class SOM:
 
 
 if __name__=='__main__':
-    arch_name_trn = abspath('data/Guia1/OR_90_trn.csv')
+    # arch_name_trn = abspath('data/Guia4/circulo.csv')
+    arch_name_trn = abspath('data/Guia4/te.csv')
     data = np.genfromtxt(arch_name_trn, delimiter=',')
     x = data[:, 0:2]
 
-    som = SOM(2, (2,2))
+    som = SOM(2)
 
-    pesos = som.trn(x, 0, [100,100,100])
+    # som.plot_pesos(som.pesos)
+    # plt.show()
+    
+    pesos = som.trn(x, 10, epocs = [100,100,100], coef_learn=[0.9, 0.1])
     # print(len(pesos))
 
     fig = plt.figure()
