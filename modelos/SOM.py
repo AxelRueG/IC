@@ -67,7 +67,7 @@ class SOM:
     def plot_pesos(self, pesos, color = 'k'):
         for i in range(pesos.shape[0]):
             for j in range(pesos.shape[1]):
-                plt.plot(pesos[i,j,0], pesos[i,j,1], f'*{color}')
+                plt.plot(pesos[i,j,0], pesos[i,j,1], f'*c')
                 # Graficar conexiones
                 if i+1 < pesos.shape[0]:
                     plt.plot(pesos[i:i+2,j,0], pesos[i:i+2,j,1], f'-{color}')    
@@ -82,19 +82,19 @@ class SOM:
 
 
 if __name__=='__main__':
-    arch_name_trn = abspath('data/Guia4/circulo.csv')
-    # arch_name_trn = abspath('data/Guia4/te.csv')
+    # arch_name_trn = abspath('data/Guia4/circulo.csv')
+    arch_name_trn = abspath('data/Guia4/te.csv')
     data = np.genfromtxt(arch_name_trn, delimiter=',')
     x = data[:, 0:2]
 
-    som = SOM(2, (10,10))
+    som = SOM(2, (20,20))
 
     plt.figure()
     plt.plot(x[:,0], x[:,1], '.r')
     som.plot_pesos(np.copy(som.pesos))
 
     time_ini = time.time()
-    pesos = som.trn(data_set=x, vecindad=5, epocs = 500, coef_learn=[0.9, 0.1])
+    pesos = som.trn(data_set=x, vecindad=2, epocs = 500, coef_learn=[0.9, 0.1])
     print(f'tiempo de ejecucion: {time.time() - time_ini} seg')
 
     plt.figure()
