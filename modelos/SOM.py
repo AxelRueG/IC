@@ -1,8 +1,5 @@
-from matplotlib.animation import FuncAnimation
 import numpy as np
 import matplotlib.pyplot as plt
-from os.path import abspath
-import time
 
 np.random.seed = 10
 
@@ -79,29 +76,3 @@ class SOM:
         plt.title(f'Frame {frame}')
         plt.plot(x[:,0], x[:,1], '.r')
         self.plot_pesos(pesos[frame])
-
-
-if __name__=='__main__':
-    # arch_name_trn = abspath('data/Guia4/circulo.csv')
-    arch_name_trn = abspath('data/Guia4/te.csv')
-    data = np.genfromtxt(arch_name_trn, delimiter=',')
-    x = data[:, 0:2]
-
-    som = SOM(2, (20,20))
-
-    plt.figure()
-    plt.plot(x[:,0], x[:,1], '.r')
-    som.plot_pesos(np.copy(som.pesos))
-
-    time_ini = time.time()
-    pesos = som.trn(data_set=x, vecindad=2, epocs = 500, coef_learn=[0.9, 0.1])
-    print(f'tiempo de ejecucion: {time.time() - time_ini} seg')
-
-    plt.figure()
-    plt.plot(x[:,0], x[:,1], '.r')
-    som.plot_pesos(np.copy(som.pesos))
-    plt.show()
-
-    # fig = plt.figure()
-    # anim = FuncAnimation(fig, som.animaccion, frames=len(pesos), interval=100, fargs=(pesos, x))
-    # plt.show()
