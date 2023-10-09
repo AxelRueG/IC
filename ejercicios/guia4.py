@@ -4,7 +4,7 @@ import time
 from sklearn import metrics 
 from os.path import abspath
 from modelos.SOM import SOM
-from modelos.k_means import k_means_online
+from modelos.k_means import k_means_online 
 
 
 def ejer_1():
