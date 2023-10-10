@@ -6,36 +6,13 @@ from matplotlib.ticker import LinearLocator
 from modelos import gradiente
 
 
-def genetico(code, decode, range, max_epoc):
-    poblacion = code(np.random.randint())
-
-
-
-
 '''
 Ejercicio 1a con 10 bits podemos representar todos los puntos
 '''
-f1 = lambda x: -x * np.sin(np.sqrt(np.abs(x)))
-x = np.linspace(-512,511,1024)
-
-plt.plot(x,f1(x))
+def f1(x): return -x * np.sin(np.sqrt(np.abs(x)))
+x = np.linspace(-512, 511, 1024)
+plt.plot(x, f1(x))
 plt.show()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 # # Ejemplo de uso:
