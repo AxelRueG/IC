@@ -65,7 +65,7 @@ def grafica_1(F, fenotipo, generacion, mejores_apt, target_min, target_max):
     plt.xlabel("Iteración")
     plt.ylabel("Mejor aptitud")
     plt.plot(range(1, generacion + 1), mejores_apt)
-    plt.axis([0, generacion, max(mejores_apt)-50, max(mejores_apt)+50])
+    plt.axis([0, generacion, max(mejores_apt)-5, max(mejores_apt)+5])
 
     
     X,Y = np.meshgrid(np.linspace(-100,100,2000), np.linspace(-100,100,2000))
@@ -91,38 +91,38 @@ def F2(x):
 fitness2 = lambda x: 1 - F2(x)
 
 
-# # Ejercicio 1a
-# genetico(
-#     F1,
-#     fitness1,
-#     decode=decodificar,
-#     gen_bits=21,
-#     tamanio_poblacion=20,
-#     target_max=512,
-#     target_min=-512,
-#     num_generaciones=200,
-#     porcentaje_hijos=0.80,
-#     probabilidad_cruza=0.8,
-#     probabilidad_mutacion=0.40,
-#     min_bits_cruza=1,
-#     grafica=grafica_1)
-
-# Ejercicio 1b
+# Ejercicio 1a
 genetico(
-    F2,
-    fitness2,
-    decode=decodificar_fun2,
-    gen_bits=40,
-    tamanio_poblacion=30,
-    gen_target_max=2**20-1,
-    target_max=100,
-    target_min=-100,
+    F1,
+    fitness1,
+    decode=decodificar,
+    gen_bits=21,
+    tamanio_poblacion=20,
+    target_max=512,
+    target_min=-512,
     num_generaciones=200,
     porcentaje_hijos=0.80,
     probabilidad_cruza=0.8,
     probabilidad_mutacion=0.40,
-    # grafica=grafica_1,
-    min_bits_cruza=1)
+    min_bits_cruza=1,
+    grafica=grafica_1)
+
+# # Ejercicio 1b
+# genetico(
+#     F2,
+#     fitness2,
+#     decode=decodificar_fun2,
+#     gen_bits=40,
+#     tamanio_poblacion=30,
+#     gen_target_max=2**20-1,
+#     target_max=100,
+#     target_min=-100,
+#     num_generaciones=200,
+#     porcentaje_hijos=0.80,
+#     probabilidad_cruza=0.8,
+#     probabilidad_mutacion=0.40,
+#     grafica=grafica_1,
+#     min_bits_cruza=1)
 
 plt.show()
 
