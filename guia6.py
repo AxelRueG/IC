@@ -9,11 +9,14 @@ from modelos import gradiente
 '''
 Ejercicio 1a con 10 bits podemos representar todos los puntos
 '''
-def f1(x): return -x * np.sin(np.sqrt(np.abs(x)))
-x = np.linspace(-512, 511, 1024)
-plt.plot(x, f1(x))
-plt.show()
+# def f1(x): return -x * np.sin(np.sqrt(np.abs(x)))
+# x = np.linspace(-512, 511, 1024)
+# plt.plot(x, f1(x))
+# plt.show()
 
+plt.figure(1)
+plt.plot(1,1,'*')
+plt.pause(1)
 
 # # Ejemplo de uso:
 # # Definimos una función de ejemplo que queremos minimizar
