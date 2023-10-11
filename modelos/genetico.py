@@ -54,8 +54,8 @@ def genetico(
             progenitores.append(progenitor_elegido)
 
         # Selección de parejas de progenitores
-        padres1, padres2 = progenitores[:tamanio_poblacion //
-                                        2], progenitores[tamanio_poblacion // 2:]
+        padres1, padres2 = progenitores[:len(progenitores) //
+                                        2], progenitores[len(progenitores) // 2:]
 
         # CRUZA ------------------------------------------------------------------------------------
         nueva_poblacion = []
@@ -114,13 +114,14 @@ def genetico(
         p = fenotipo[i_mejor_apt]
         pF = F(p)
         print(
-            f'[{generacion}]: fenotipo => {p}, valor=> {pF}')
+            f'[{generacion}]: fenotipo => {p}, valor=> {fitness([p])}')
 
         if grafica:
             grafica(F, fenotipo, generacion,
                     mejores_apt, target_min, target_max)
 
         # Comprobar si debe salirse por estancamiento en el resultado
+        # @TODO: hacer que tenga un valor de fitnes para el corte
         if mejor_apt == max_it_anterior:
             cant_max_iguales += 1
         else:
@@ -128,71 +129,3 @@ def genetico(
 
         if cant_max_iguales > estancamiento_aceptado:
             no_mejora = 1
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# # Método del gradiente descendente
-# dF = lambda x: (-np.sin(np.sqrt(np.abs(x))) - (x**2 * np.cos(np.sqrt(np.abs(x))) / (2 * np.abs(x)**(3/2))))
-# cant_min_iguales = 0
-# no_mejora = 0
-# # Continuación del código
-
-# a = 0.3
-# x0 = np.random.randint(target_min, target_max + 1, size=(tamanio_poblacion, 1))
-
-# x_gradiente = x0.copy()
-# y_gradiente = []
-
-# for i in range(1, num_generaciones + 1):
-#     gradiente = dF(x_gradiente)
-#     x_gradiente = x_gradiente - a * gradiente
-
-#     x_gradiente[x_gradiente < -512] = -512
-#     x_gradiente[x_gradiente > 512] = 512
-
-#     y_gradiente.append(F(x_gradiente))
-
-#     j_min_y = np.argmin(y_gradiente[-1])
-
-#     plt.figure(3)
-#     plt.clf()
-#     plt.title("Iteración nro " + str(i))
-#     plt.xlabel("x")
-#     plt.ylabel("y")
-#     plt.plot(x, F(x))
-
-#     if j_min_y == 0:
-#         plt.plot(x_gradiente[1:], y_gradiente[-1][1:], 'r*')
-#     else:
-#         j = [0] + list(range(1, j_min_y)) + list(range(j_min_y + 1, len(y_gradiente[-1])))
-#         plt.plot(x_gradiente[j], y_gradiente[-1][j], 'r*')
-
-#     plt.plot(x_gradiente[j_min_y], y_gradiente[-1][j_min_y], 'b*')
-#     plt.grid(True)
-#     plt.pause(0.000001)
-
-#     # Comprobar si debe salirse por estancamiento en el resultado
-#     # if i > 1 and abs(y_gradiente[-2] - y_gradiente[-1]) < tol:
-#     #     cant_min_iguales += 1
-#     # else:
-#     #     cant_min_iguales = 0
-
-#     # if cant_min_iguales > estancamiento_aceptado:
-#     #     no_mejora = 1
-
-#     # if no_mejora:
-#     #     break
-
-# # plt.show()

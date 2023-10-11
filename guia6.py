@@ -63,9 +63,6 @@ def graficar_grad_1(f, tamanio_poblacion, target_max, target_min, learning_rate 
 
     return minimum_value, X
 
-def F1(x): return (-x * np.sin(np.sqrt(np.abs(x))))
-def fitness1(x): return 1 - F1(x)
-
 # ======= Función 2 ================================================================================
 def decodificar_fun2(poblacion, gen_target_max, target_max, target_min):
     num_bits = poblacion.shape[1]
@@ -133,15 +130,11 @@ def graficar_grad_2(f, tamanio_poblacion, target_max, target_min, learning_rate 
     minimum_value = f(X)
     return minimum_value, X
 
-def F2(x):
-    if x.shape[0] == 2:
-        return ((x[0]**2+x[1]**2)**0.25)*(np.sin(50*((x[0]**2+x[1]**2)**0.1))**2 + 1)
-    else: 
-        return ((x[:,0]**2+x[:,1]**2)**0.25)*(np.sin(50*((x[:,0]**2+x[:,1]**2)**0.1))**2 + 1)
-fitness2 = lambda x: 1 - F2(x)
-
 
 # Ejercicio 1a
+def F1(x): return (-x * np.sin(np.sqrt(np.abs(x))))
+def fitness1(x): return 1 - F1(x)
+
 genetico(
     F1,
     fitness1,
@@ -159,6 +152,13 @@ genetico(
 graficar_grad_1(F1,20,500,-500)
 
 # # Ejercicio 1b
+# def F2(x):
+#     if x.shape[0] == 2:
+#         return ((x[0]**2+x[1]**2)**0.25)*(np.sin(50*((x[0]**2+x[1]**2)**0.1))**2 + 1)
+#     else: 
+#         return ((x[:,0]**2+x[:,1]**2)**0.25)*(np.sin(50*((x[:,0]**2+x[:,1]**2)**0.1))**2 + 1)
+# fitness2 = lambda x: 1 - F2(x)
+# 
 # genetico(
 #     F2,
 #     fitness2,
