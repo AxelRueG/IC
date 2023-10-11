@@ -54,7 +54,7 @@ def decodificar_fun2(poblacion, gen_target_max, target_max, target_min):
     
 
 
-def grafica_1(F, fenotipo, generacion, mejores_apt, target_min, target_max):
+def grafica_2(F, fenotipo, generacion, mejores_apt, target_min, target_max):
     pF = F(fenotipo)
 
     plt.figure(1)
@@ -121,7 +121,7 @@ genetico(
 #     porcentaje_hijos=0.80,
 #     probabilidad_cruza=0.8,
 #     probabilidad_mutacion=0.40,
-#     grafica=grafica_1,
+#     grafica=grafica_2,
 #     min_bits_cruza=1)
 
 plt.show()
