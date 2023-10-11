@@ -3,7 +3,7 @@ import numpy as np
 from modelos.genetico import genetico
 from matplotlib import cm
 from matplotlib.ticker import LinearLocator
-from modelos import gradiente
+from modelos.gradiente import forward_difference
 
 def escalar(number, original_max, target_max, target_min):
     return (number/original_max) * (target_max - target_min) + target_min
@@ -40,6 +40,29 @@ def grafica_1(F, fenotipo, generacion, mejores_apt, target_min, target_max):
     plt.pause(0.000001)
 
 
+def graficar_grad_1(f, tamanio_poblacion, target_max, target_min, learning_rate = 0.1, num_iterations = 200):
+    A = target_max - target_min;
+    X = A * np.random.rand(tamanio_poblacion) + target_min
+
+    for i in range(num_iterations):
+        gradient = forward_difference(f, X, h=0.001)  # Calcular el gradiente usando diferencias finitas
+        X = X - learning_rate * gradient  # Actualizar la posición usando el descenso del gradiente
+
+        plt.figure(2)
+        plt.clf()
+        plt.title(f"Iteración nro {i}")
+        X[X>target_max] = target_max
+        X[X<target_min] = target_min
+        x = np.linspace(target_min,target_max,500)
+        plt.plot(x,f(x))
+        plt.plot(X,f(X),'o')
+        plt.pause(0.000001)
+
+    # Calcular el valor mínimo encontrado
+    minimum_value = f(X)
+
+    return minimum_value, X
+
 def F1(x): return (-x * np.sin(np.sqrt(np.abs(x))))
 def fitness1(x): return 1 - F1(x)
 
@@ -68,20 +91,47 @@ def grafica_2(F, fenotipo, generacion, mejores_apt, target_min, target_max):
     plt.axis([0, generacion, max(mejores_apt)-5, max(mejores_apt)+5])
 
     
-    X,Y = np.meshgrid(np.linspace(-100,100,2000), np.linspace(-100,100,2000))
+    X,Y = np.meshgrid(np.linspace(target_min,target_max,2000), np.linspace(target_min,target_max,2000))
     Z = F2(np.array([X,Y]))
     plt.subplot(1, 2, 2)
     plt.title(f"Iteración nro {generacion}")
     plt.xlabel("x")
     plt.ylabel("y")
     plt.pcolormesh(X,Y,Z, cmap='Greys', vmin=np.min(Z), vmax=np.max(Z))
-    # set the limits of the plot to the limits of the data
-    plt.axis([-100,100,-100,100])
+    plt.axis([target_min,target_max,target_min,target_max])
 
     plt.plot(fenotipo[:,0], fenotipo[:,1], 'o')
     plt.grid(True)
     plt.pause(0.0000001)
 
+def graficar_grad_2(f, tamanio_poblacion, target_max, target_min, learning_rate = 0.1, num_iterations = 200):
+    A = target_max - target_min;
+    X = A * np.random.rand(tamanio_poblacion, 2) + target_min
+
+    for i in range(num_iterations):
+        gradiente = forward_difference(f, X, h=0.001)  # Calcular el gradiente usando diferencias finitas
+        X_old = X.copy()
+        X = X - learning_rate * gradiente  # Actualizar la posición usando el descenso del gradiente
+
+        x,y = np.meshgrid(np.linspace(target_min,target_max,2000), np.linspace(target_min,target_max,2000))
+        z = F2(np.array([x,y]))
+        plt.figure(2)
+        plt.clf()
+        plt.title(f"Iteración nro {i}")
+        plt.xlabel("x")
+        plt.ylabel("y")
+        plt.pcolormesh(x,y,z, cmap='Greys', vmin=np.min(z), vmax=np.max(z))
+        plt.axis([target_min,target_max,target_min,target_max])
+
+        plt.plot(X[:,0], X[:,1], 'ob')
+        plt.pause(0.0001)
+
+        if np.all(X == X_old):
+            break
+
+    # Calcular el valor mínimo encontrado
+    minimum_value = f(X)
+    return minimum_value, X
 
 def F2(x):
     if x.shape[0] == 2:
@@ -106,6 +156,7 @@ genetico(
     probabilidad_mutacion=0.40,
     min_bits_cruza=1,
     grafica=grafica_1)
+graficar_grad_1(F1,20,500,-500)
 
 # # Ejercicio 1b
 # genetico(
@@ -123,8 +174,8 @@ genetico(
 #     probabilidad_mutacion=0.40,
 #     grafica=grafica_2,
 #     min_bits_cruza=1)
-
 plt.show()
+# graficar_grad_2(F2,30,100,-100)
 
 
 '''

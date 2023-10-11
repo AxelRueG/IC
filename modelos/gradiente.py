@@ -1,3 +1,5 @@
+import numpy as np
+
 def forward_difference(f, x, h):
     """
     Calcula la derivada de la función f en el punto x utilizando la diferencia hacia adelante.
@@ -10,8 +12,15 @@ def forward_difference(f, x, h):
     Returns:
     La aproximación de la derivada de f en el punto x.
     """
-    df = (f(x + h) - f(x)) / h
-    return df
+    if x.shape[1] == 2:
+        Hx = np.zeros(x.shape)
+        Hx[:,0] = h
+        dfx = (f(x + Hx) - f(x)) / h
+        dfy = (f(x + Hx[:,::-1]) - f(x)) / h
+        return np.hstack((np.transpose([dfx]),np.transpose([dfy])))
+    else:
+        df = (f(x + h) - f(x)) / h
+        return df
 
 def gradient_descent(f, initial_x, learning_rate, num_iterations):
     """
