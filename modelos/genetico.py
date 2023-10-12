@@ -114,14 +114,14 @@ def genetico(
         p = fenotipo[i_mejor_apt]
         pF = F(p)
         print(
-            f'[{generacion}]: fenotipo => {p}, valor=> {fitness([p])}')
+            f'[{generacion}]: fenotipo => {p}, tags => {np.sum(p!=0)}, fitness=> {fitness([p])}')
+            # f'[{generacion}]: fenotipo => {p}, valor=> {pF}')
 
         if grafica:
             grafica(F, fenotipo, generacion,
                     mejores_apt, target_min, target_max)
 
         # Comprobar si debe salirse por estancamiento en el resultado
-        # @TODO: hacer que tenga un valor de fitnes para el corte
         if mejor_apt == max_it_anterior:
             cant_max_iguales += 1
         else:
