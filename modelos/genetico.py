@@ -14,7 +14,7 @@ def genetico(
     num_generaciones=200,
     porcentaje_hijos=0.80,
     probabilidad_cruza=0.8,
-    probabilidad_mutacion=0.40,
+    probabilidad_mutacion=0.10,
     min_bits_cruza=1,
     grafica=None
 ):
@@ -23,7 +23,7 @@ def genetico(
     AptitudRequerida = 1e-7
     tol = 1e-5
     gen_target_max = gen_target_max if gen_target_max else 2**gen_bits - 1
-    estancamiento_aceptado = int(0.2 * num_generaciones)
+    estancamiento_aceptado = int(0.5 * num_generaciones)
 
     # Población inicial
     poblacion = np.random.randint(2, size=(tamanio_poblacion, gen_bits))

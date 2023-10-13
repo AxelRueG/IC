@@ -85,7 +85,7 @@ def fitness1(x): return 1 - F1(x)
 #     num_generaciones=200,
 #     porcentaje_hijos=0.80,
 #     probabilidad_cruza=0.8,
-#     probabilidad_mutacion=0.40,
+#     probabilidad_mutacion=0.10,
 #     min_bits_cruza=1,
 #     grafica=grafica_1)
 # graficar_grad_1(F1, 20, 500, -500)
@@ -179,15 +179,15 @@ genetico(
     fitness2,
     decode=decodificar_fun2,
     gen_bits=40,
-    tamanio_poblacion=30,
+    tamanio_poblacion=40,
     gen_target_max=2**20-1,
     target_max=100,
     target_min=-100,
     num_generaciones=200,
     porcentaje_hijos=0.80,
     probabilidad_cruza=0.8,
-    probabilidad_mutacion=0.40,
-    # grafica=grafica_2,
+    probabilidad_mutacion=0.10,
+    grafica=grafica_2,
     min_bits_cruza=1)
 graficar_grad_2(F2,30,100,-100)
 
