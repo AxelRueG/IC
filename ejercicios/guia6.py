@@ -74,21 +74,24 @@ def F1(x): return (-x * np.sin(np.sqrt(np.abs(x))))
 def fitness1(x): return 1 - F1(x)
 
 
-# genetico(
-#     F1,
-#     fitness1,
-#     decode=decodificar,
-#     gen_bits=21,
-#     tamanio_poblacion=20,
-#     target_max=512,
-#     target_min=-512,
-#     num_generaciones=200,
-#     porcentaje_hijos=0.80,
-#     probabilidad_cruza=0.8,
-#     probabilidad_mutacion=0.10,
-#     min_bits_cruza=1,
-#     grafica=grafica_1)
-# graficar_grad_1(F1, 20, 500, -500)
+def guia6_ejer1a():
+    genetico(
+        F1,
+        fitness1,
+        decode=decodificar,
+        gen_bits=21,
+        tamanio_poblacion=20,
+        target_max=512,
+        target_min=-512,
+        num_generaciones=200,
+        porcentaje_hijos=0.80,
+        probabilidad_cruza=0.8,
+        probabilidad_mutacion=0.10,
+        min_bits_cruza=1,
+        grafica=grafica_1)
+    graficar_grad_1(F1, 20, 500, -500)
+
+    plt.show()
 
 
 # --------------------------------------------------------------------------------------------------
@@ -174,25 +177,27 @@ def F2(x):
 
 def fitness2(x): return 1 - F2(x)
 
-genetico(
-    F2,
-    fitness2,
-    decode=decodificar_fun2,
-    gen_bits=40,
-    tamanio_poblacion=40,
-    gen_target_max=2**20-1,
-    target_max=100,
-    target_min=-100,
-    num_generaciones=200,
-    porcentaje_hijos=0.80,
-    probabilidad_cruza=0.8,
-    probabilidad_mutacion=0.10,
-    grafica=grafica_2,
-    min_bits_cruza=1)
-graficar_grad_2(F2,30,100,-100)
+
+def guia6_ejer1b():
+    genetico(
+        F2,
+        fitness2,
+        decode=decodificar_fun2,
+        gen_bits=40,
+        tamanio_poblacion=40,
+        gen_target_max=2**20-1,
+        target_max=100,
+        target_min=-100,
+        num_generaciones=200,
+        porcentaje_hijos=0.80,
+        probabilidad_cruza=0.8,
+        probabilidad_mutacion=0.10,
+        grafica=grafica_2,
+        min_bits_cruza=1)
+    graficar_grad_2(F2,30,100,-100)
 
 
-plt.show()
+    plt.show()
 
 '''
 # Ejemplo GRAFICA 3d:

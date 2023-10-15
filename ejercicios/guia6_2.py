@@ -46,18 +46,19 @@ def grafica(F, fenotipo, generacion, mejores_apt, target_min, target_max):
     plt.pause(0.0000001)
 
 
-F = lambda x: x
+def guia6_ejer2():
+    F = lambda x: x
 
-genetico(
-    F,
-    fitness,
-    decode=decodificar_leukemia,
-    gen_bits=data.shape[1],
-    tamanio_poblacion=50,
-    num_generaciones=500,
-    porcentaje_hijos=0.80,
-    probabilidad_cruza=0.8,
-    probabilidad_mutacion=0.40,
-    # grafica=grafica,
-    min_bits_cruza=1)
+    genetico(
+        F,
+        fitness,
+        decode=decodificar_leukemia,
+        gen_bits=data.shape[1],
+        tamanio_poblacion=50,
+        num_generaciones=500,
+        porcentaje_hijos=0.80,
+        probabilidad_cruza=0.8,
+        probabilidad_mutacion=0.40,
+        # grafica=grafica,
+        min_bits_cruza=1)
 
