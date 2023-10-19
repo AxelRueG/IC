@@ -14,11 +14,11 @@ from modelos.enjambre import colonia_de_hormigas, enjambre_gEP
 #     plt.plot(x,f(x))
 #     plt.plot(poblacion,f(poblacion),'ob')
 #     plt.title(f'epoca {epoc}')
-#     plt.pause(0.1)
+#     plt.pause(0.001)
 
 # def f(x): return (-x * np.sin(np.sqrt(np.abs(x))))
 
-# enjambre_gEP(f, -512, 512, poblacion=10, dim=1, epoc_max=200, graficar=graficar)
+# enjambre_gEP(f, -512, 512, poblacion=5, dim=1, epoc_max=200, graficar=graficar)
 
 # --------------------------------------- item b ---------------------------------------------------
 # def graficar_2(poblacion, epoc, x_min, x_max):
