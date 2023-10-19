@@ -95,7 +95,7 @@ def calcular_probabilidades(sigma, eta, caminos, alpha, beta):
     return prob
 
 
-def colonia_de_hormigas(d, N=10, alpha=1.0, beta=1.0, p=0.2, Q=0.8, iterations=1000):
+def colonia_de_hormigas(d, N=10, alpha=1.0, beta=1.0, p=0.1, Q=0.8, iterations=300):
     '''
     Parámetros del algoritmo
 
@@ -135,6 +135,7 @@ def colonia_de_hormigas(d, N=10, alpha=1.0, beta=1.0, p=0.2, Q=0.8, iterations=1
     # Ciclo principal
     while t < iterations and mismo_camino < min_it:
         caminos = [[] for _ in range(N)]
+        l_caminos = []
 
         for ant in range(N):
             camino = [0]  # Inicializar el camino
@@ -155,6 +156,7 @@ def colonia_de_hormigas(d, N=10, alpha=1.0, beta=1.0, p=0.2, Q=0.8, iterations=1
 
             longitud_camino = np.sum([d[camino[i], camino[i + 1]]
                                       for i in range(len(camino) - 1)])
+            l_caminos.append(longitud_camino)
 
             # actualizamos el historico del mejor camino
             if longitud_camino < mejor_longitud:
@@ -180,7 +182,11 @@ def colonia_de_hormigas(d, N=10, alpha=1.0, beta=1.0, p=0.2, Q=0.8, iterations=1
         # ---- depositar feromonas -----------------------------------------------------------------
         for k in range(N):
             for i in range(len(caminos[k]) - 1):
-                delta_sigma_k_ij = Q    # uniforme
+                # delta_sigma_k_ij = Q/l_caminos[k]                           # global
+                # delta_sigma_k_ij = Q                                        # uniforme
+                delta_sigma_k_ij = Q/d[caminos[k][i], caminos[k][i+1]]      # local
+                
+
                 # mantenemos simetria:
                 sigma[caminos[k][i], caminos[k][i+1]] += delta_sigma_k_ij
                 sigma[caminos[k][i+1], caminos[k][i]] += delta_sigma_k_ij
