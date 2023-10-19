@@ -20,34 +20,36 @@ def enjambre_gEP(f, x_min, x_max, poblacion=10, dim=1, epoc_max=200, graficar=No
 
     # ---- Inicializacion --------------------------------------------------------------------------
     x = np.random.uniform(x_min, x_max, (poblacion, dim))
-    y = x
+    y = x #mejor local
     v = np.random.uniform(size=(poblacion, dim)) - 0.5
-    estancamiento_aceptado = 50
+    estancamiento_aceptado = 100
 
     c1 = np.linspace(0.5, 0.2, epoc_max)
     c2 = np.linspace(0.2, 0.5, epoc_max)
 
-    ym = y[np.argmin(f(y))].copy()
+    ym = y[np.argmin(f(y))].copy() #mejor global
     epoc = 0
     estancamiento = 0
     # ---- Aprendizaje ----------------------------------------------------------------------------- 
     while (epoc < epoc_max and estancamiento < estancamiento_aceptado):
         ym_old = ym.copy()
+        #busco la mejor posicion
         for k in range(x.shape[0]):
             if f(x[k]) < f(y[k]):
                 y[k] = x[k]
             if f(y[k]) < f(ym):
                 ym = y[k].copy()
 
+        #actualizo los pesos
         r1 = np.random.uniform(size=(poblacion, dim))
         r2 = np.random.uniform(size=(poblacion, dim))
-        for k in range(x.shape[0]):
-            v[k] += c1[epoc]*r1[k]*(y[k] - x[k]) + c2[epoc]*r2[k]*(ym-x[k])
-            aux = x[k] + v[k]
-            # checkeamos que no se valla del limite
-            # if x_min < aux < x_max:
-            #     x[k] = aux
 
+        #calculo las nuevas posicioens
+        for k in range(x.shape[0]):
+            v[k] = v[k]*c1[epoc]*r1[k]*(y[k] - x[k]) + c2[epoc]*r2[k]*(ym-x[k])
+            aux = x[k] + v[k]
+            # checkeamos que no se valla del limite 
+            #(lo hicimos con un for porque si es de una dimencion mayor explota)
             for i in range(len(aux)):
                 if x_min < aux[i] < x_max:
                     x[k][i] = aux[i]
@@ -57,6 +59,7 @@ def enjambre_gEP(f, x_min, x_max, poblacion=10, dim=1, epoc_max=200, graficar=No
 
         epoc += 1
 
+        #checkeo cuantas veces tenemos el mismo minimo global para salir del while antes
         if np.all(ym_old != ym):
             estancamiento = 0
         else:
@@ -79,7 +82,6 @@ def calcular_probabilidades(sigma, eta, caminos, alpha, beta):
     Returns:
     probabilidades de elegir cada camino
     '''
-
     # creamos mascara
     u = np.ones(len(sigma), dtype=bool)
     u[caminos] = False
@@ -95,7 +97,7 @@ def calcular_probabilidades(sigma, eta, caminos, alpha, beta):
     return prob
 
 
-def colonia_de_hormigas(d, N=10, alpha=1.0, beta=1.0, p=0.5, Q=0.2, iterations=100):
+def colonia_de_hormigas(d, N=50, alpha=1.0, beta=1.0, p=0.2, Q=8, iterations=1000):
     '''
     Parámetros del algoritmo
 
