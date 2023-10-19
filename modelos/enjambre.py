@@ -97,7 +97,7 @@ def calcular_probabilidades(sigma, eta, caminos, alpha, beta):
     return prob
 
 
-def colonia_de_hormigas(d, N=50, alpha=1.0, beta=1.0, p=0.2, Q=0.8, iterations=1000):
+def colonia_de_hormigas(d, N=100, alpha=1.0, beta=1.0, p=0.2, Q=0.8, iterations=1000):
     '''
     Parámetros del algoritmo
 
